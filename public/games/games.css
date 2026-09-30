@@ -1,0 +1,1301 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+  --sandstone: #d9a15b;
+  --sandstone-dark: #8a5a2b;
+  --terracotta: #c1502e;
+  --gold: #ffcf70;
+  --deep-brown: #241608;
+  --cream: #fdf3e2;
+}
+
+* { box-sizing: border-box; }
+
+#dom-host, #game { font-family: 'Poppins', sans-serif; color: var(--cream); }
+
+.hidden { display: none !important; }
+
+/* ---------- MENU SCREEN ---------- */
+#menu-screen {
+  width: 100%;
+  height: 100%;
+}
+
+#menu-screen h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.6rem;
+  margin: 0;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(255, 207, 112, 0.4);
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  margin: 6px 0 36px;
+  color: var(--sandstone);
+  font-size: 0.95rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.game-list {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 760px;
+}
+
+.game-card {
+  width: 320px;
+  background: linear-gradient(160deg, #2e1b0c, #1a0f05);
+  border: 1px solid var(--sandstone-dark);
+  border-radius: 14px;
+  padding: 22px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--cream);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 20px rgba(255,207,112,0.15);
+}
+
+.game-num {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: var(--terracotta);
+  letter-spacing: 2px;
+}
+
+.game-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.game-desc {
+  font-size: 0.85rem;
+  color: #cbb597;
+  line-height: 1.4;
+}
+
+#result-banner {
+  margin-top: 30px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  border: 1px solid var(--gold);
+  background: rgba(255, 207, 112, 0.08);
+}
+
+#result-banner.success { color: #8fffb0; border-color: #8fffb0; }
+#result-banner.fail { color: #ff9f8f; border-color: #ff9f8f; }
+
+/* ---------- GAME SCREEN ---------- */
+
+#game {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #000;
+  box-sizing: border-box;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- DOM-BASED PUZZLE HOST ---------- */
+/* ---------- DOM-BASED PUZZLE HOST ---------- */
+
+#dom-host {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+} 
+
+.puzzle-wrap, .memory-wrap {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.puzzle-sidebar {
+  width: 300px;
+  min-width: 260px;
+  background: var(--deep-brown);
+  border-right: 2px solid var(--sandstone-dark);
+  padding: 24px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.puzzle-sidebar h2 {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 1.3rem;
+  margin: 0 0 4px;
+}
+
+.puzzle-sub {
+  color: var(--sandstone);
+  font-size: 0.85rem;
+  margin: 0 0 18px;
+}
+
+.puzzle-instructions {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+
+.puzzle-progress-label {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--sandstone);
+  margin-bottom: 6px;
+}
+
+.puzzle-progress-track {
+  width: 100%;
+  height: 14px;
+  background: #3a2410;
+  border: 1px solid var(--sandstone-dark);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.puzzle-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.puzzle-progress-count {
+  margin-top: 6px;
+  font-family: monospace;
+  color: var(--cream);
+}
+
+.puzzle-fact {
+  margin-top: 28px;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #cbb597;
+  line-height: 1.5;
+}
+
+.puzzle-board {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+  overflow: auto;
+}
+
+.puzzle-target {
+  display: grid;
+  gap: 2px;
+  background: rgba(0,0,0,0.4);
+  border: 2px dashed var(--sandstone-dark);
+  background-blend-mode: normal;
+  opacity: 1;
+  position: relative;
+}
+
+.puzzle-slot {
+  border: 1px dashed rgba(255,207,112,0.25);
+  box-sizing: border-box;
+}
+
+.puzzle-slot.filled {
+  border: none;
+}
+
+.puzzle-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 600px;
+}
+
+.puzzle-tile {
+  border-radius: 4px;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  border: 2px solid var(--gold);
+}
+
+.puzzle-tile.dragging {
+  cursor: grabbing;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.puzzle-tile.locked {
+  cursor: default;
+  border: none;
+  box-shadow: none;
+}
+
+.puzzle-complete-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 12, 5, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.puzzle-complete-overlay h2 {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+}
+
+.puzzle-complete-overlay p {
+  color: var(--cream);
+  max-width: 400px;
+  font-style: italic;
+}
+
+/* ---------- MEMORY GAME (Ajanta Caves) ---------- */
+.memory-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 30px;
+  align-content: center;
+  justify-content: center;
+}
+
+.memory-card {
+  width: 110px;
+  height: 110px;
+  perspective: 800px;
+  cursor: pointer;
+}
+
+.memory-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s;
+  transform-style: preserve-3d;
+}
+
+.memory-card.flipped .memory-card-inner,
+.memory-card.matched .memory-card-inner {
+  transform: rotateY(180deg);
+}
+
+.memory-card-back, .memory-card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.memory-card-back {
+  background: linear-gradient(160deg, #3a2410, #1c1006);
+  border: 2px solid var(--sandstone-dark);
+}
+
+.memory-card-front {
+  background: var(--cream);
+  border: 2px solid var(--gold);
+  transform: rotateY(180deg);
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.memory-card-front svg {
+  width: 100%;
+  height: 100%;
+}
+
+.memory-card.matched {
+  opacity: 0.55;
+}
+
+/* ---------- ARROW PAD (Charminar, touch controls) ---------- */
+.arrow-pad {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.arrow-row {
+    display: flex;
+    gap: 6px;
+}
+
+.arrow-pad button {
+    width: 46px;
+    height: 46px;
+    border-radius: 8px;
+    background: rgba(20, 12, 5, 0.85);
+    border: 1px solid var(--sandstone-dark);
+    color: var(--gold);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.arrow-pad button:active {
+    border-color: var(--gold);
+}
+
+/* ---------- SANCHI STUPA (decode puzzle) ---------- */
+.sanchi-legend {
+  margin-top: 20px;
+  padding: 14px;
+  background: rgba(255,207,112,0.06);
+  border: 1px solid var(--sandstone-dark);
+  border-radius: 8px;
+}
+
+.sanchi-legend-title {
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: var(--sandstone);
+  margin-bottom: 8px;
+}
+
+.sanchi-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.sanchi-legend-glyph {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+}
+
+.sanchi-legend-letter {
+  font-family: monospace;
+  font-weight: bold;
+  color: var(--cream);
+}
+
+.sanchi-glyph-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sanchi-glyph-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sanchi-glyph-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.sanchi-drop-area {
+  width: 56px;
+  height: 56px;
+  border: 2px dashed rgba(255,207,112,0.35);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sanchi-tray {
+  max-width: 500px;
+}
+
+.sanchi-letter-tile {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  color: var(--deep-brown);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border-radius: 8px;
+  border: 2px solid var(--gold);
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.sanchi-letter-tile.dragging {
+  cursor: grabbing;
+}
+
+.sanchi-letter-tile.locked {
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* ---------- MYSORE PALACE (timing tap button) ---------- */
+.mysore-tap-btn {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  background: rgba(20, 12, 5, 0.85);
+  color: var(--gold);
+  border: 2px solid var(--terracotta);
+  border-radius: 10px;
+  padding: 14px 28px;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.mysore-tap-btn:active {
+  border-color: var(--gold);
+  transform: translateX(-50%) scale(0.97);
+}
+
+/* ---------- FINALE CARD HIGHLIGHT ---------- */
+.finale-card {
+  border-color: var(--gold);
+  background: linear-gradient(160deg, #3a2a10, #1a0f05);
+}
+
+.finale-card .game-num {
+  color: var(--gold);
+}
+
+/* ---------- FINALE (Restore the Timeline) ---------- */
+.finale-board {
+  justify-content: flex-start;
+  padding-top: 60px;
+}
+
+.finale-strip {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 10px;
+}
+
+.finale-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.finale-slot-drop {
+  width: 84px;
+  height: 100px;
+  border: 2px dashed rgba(255,207,112,0.3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.finale-slot-marker {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--sandstone);
+}
+
+.finale-era-line {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  margin: -10px auto 10px;
+  padding: 0 40px;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sandstone-dark);
+}
+
+.finale-tray {
+  max-width: 900px;
+}
+
+.finale-crystal {
+  width: 84px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: linear-gradient(160deg, #2e1b0c, #1a0f05);
+  border: 2px solid var(--crystal-color, var(--gold));
+  border-radius: 10px;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  padding: 6px;
+  text-align: center;
+}
+
+.finale-crystal.dragging {
+  cursor: grabbing;
+}
+
+.finale-crystal.locked {
+  width: 100%;
+  height: 100%;
+  cursor: default;
+  box-shadow: none;
+}
+
+.finale-crystal-gem {
+  width: 20px;
+  height: 20px;
+  background: var(--crystal-color, var(--gold));
+  border-radius: 4px;
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px var(--crystal-color, var(--gold));
+}
+
+.finale-crystal-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.1;
+}
+
+.finale-crystal-era {
+  font-size: 0.6rem;
+  color: var(--sandstone);
+  font-family: monospace;
+}
+
+/* ============================================================
+   RESPONSIVE / MOBILE GAME UI
+   ============================================================ */
+
+#dom-host {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.puzzle-wrap,
+.memory-wrap {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.puzzle-sidebar {
+  flex: 0 0 300px;
+  min-width: 0;
+}
+
+.puzzle-board {
+  min-width: 0;
+}
+
+.puzzle-target {
+  max-width: 100%;
+}
+
+.memory-grid {
+  min-width: 0;
+}
+
+.memory-card {
+  max-width: 110px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  justify-self: center;
+}
+
+.golden-preview-art {
+  width: min(514px, 90vw) !important;
+  aspect-ratio: 4 / 3;
+  height: auto !important;
+  background-size: cover !important;
+}
+
+@media (max-width: 900px) {
+  .puzzle-wrap,
+  .memory-wrap {
+    flex-direction: column;
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .puzzle-sidebar {
+    width: 100%;
+    flex: 0 0 auto;
+    min-width: 0;
+    max-height: none;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 2px solid var(--sandstone-dark);
+    padding: 18px 16px;
+  }
+
+  .puzzle-sidebar h2 {
+    font-size: 1.15rem;
+  }
+
+  .puzzle-sub,
+  .puzzle-instructions {
+    font-size: 0.82rem;
+  }
+
+  .puzzle-fact {
+    margin-top: 18px;
+    font-size: 0.78rem;
+  }
+
+  .puzzle-board {
+    width: 100%;
+    min-width: 0;
+    min-height: 430px;
+    flex: 0 0 auto;
+    padding: 16px 10px 24px;
+    overflow: visible;
+    justify-content: center;
+  }
+
+  /* Taj Mahal's 8×5 board scales down instead of overflowing sideways. */
+  .puzzle-target:has(.taj-cell) {
+    width: min(352px, 100%) !important;
+    height: auto !important;
+    aspect-ratio: 8 / 5;
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  .puzzle-target:has(.taj-cell) .taj-cell {
+    min-width: 0;
+    min-height: 0;
+    font-size: clamp(0.75rem, 4vw, 1.2rem) !important;
+  }
+
+  /* Golden Temple puzzle board scales with the available phone width. */
+  .puzzle-target:not(:has(.taj-cell)) {
+    width: min(562px, 100%) !important;
+    height: auto !important;
+    aspect-ratio: 4 / 3;
+  }
+
+  .puzzle-tray {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .memory-grid {
+    width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    padding: 18px 14px 26px;
+    align-content: start;
+  }
+
+  .memory-card {
+    width: min(21vw, 92px);
+    max-width: 92px;
+  }
+
+  .sanchi-glyph-row {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .sanchi-glyph-slot {
+    flex: 0 0 54px;
+  }
+
+  .sanchi-tray {
+    width: 100%;
+    padding-inline: 6px;
+  }
+
+  .finale-board {
+    padding-top: 20px;
+  }
+
+  .finale-strip {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 8px 4px 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .finale-era-line {
+    gap: 16px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0 8px 8px;
+    white-space: nowrap;
+  }
+
+  .finale-tray {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .finale-crystal,
+  .finale-slot-drop {
+    width: 72px;
+    height: 86px;
+  }
+
+  .finale-crystal-name {
+    font-size: 0.58rem;
+  }
+
+  .finale-crystal-era {
+    font-size: 0.5rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .puzzle-sidebar {
+    padding: 16px 13px;
+  }
+
+  .puzzle-board {
+    min-height: 390px;
+    padding-inline: 8px;
+  }
+
+  .memory-grid {
+    gap: 8px;
+    padding-inline: 10px;
+  }
+
+  .memory-card {
+    width: min(20.5vw, 78px);
+    max-width: 78px;
+  }
+
+  .sanchi-glyph-row {
+    gap: 8px;
+  }
+
+  .sanchi-glyph-slot {
+    flex-basis: 48px;
+  }
+
+  .sanchi-glyph-icon,
+  .sanchi-drop-area {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.qutub-game-container {
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+    overflow: hidden;
+}
+
+.qutub-game-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+
+
+/* ============================================================
+   CHARMINAR — MOBILE FIX
+   ============================================================ */
+
+#game {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: #000;
+    box-sizing: border-box;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Desktop touch pad */
+.arrow-pad {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    pointer-events: auto;
+}
+
+.arrow-row {
+    display: flex;
+    gap: 7px;
+}
+
+.arrow-pad button {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: 10px;
+
+    background: rgba(20, 12, 5, 0.92);
+    border: 2px solid var(--sandstone-dark);
+
+    color: var(--gold);
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow-pad button:active {
+    background: rgba(255, 207, 112, 0.18);
+    border-color: var(--gold);
+    transform: scale(0.94);
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    #game {
+        width: 100%;
+        height: 100%;
+        min-height: 560px;
+        overflow: hidden;
+    }
+
+    #gameCanvas {
+        width: 100%;
+        height: 100%;
+        min-height: 560px;
+    }
+
+    /*
+       Move the controls to the bottom-right so they don't
+       overlap the important maze/sidebar area.
+    */
+    .arrow-pad {
+        left: auto;
+        right: 14px;
+        bottom: 14px;
+
+        gap: 5px;
+    }
+
+    .arrow-row {
+        gap: 5px;
+    }
+
+    .arrow-pad button {
+        width: 52px;
+        height: 52px;
+
+        border-radius: 12px;
+        font-size: 1.3rem;
+
+        background: rgba(20, 12, 5, 0.94);
+        border: 2px solid rgba(255, 207, 112, 0.55);
+    }
+}
+
+
+/* ============================================================
+   SMALL PHONES
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    #game {
+        min-height: 620px;
+    }
+
+    #gameCanvas {
+        min-height: 620px;
+    }
+
+    .arrow-pad {
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .arrow-pad button {
+        width: 55px;
+        height: 55px;
+        font-size: 1.35rem;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+    #game {
+        min-height: 600px;
+    }
+
+    #gameCanvas {
+        min-height: 600px;
+    }
+
+    .arrow-pad button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}
+.gateway-game-root {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Poppins, sans-serif;
+}
+
+.gateway-canvas-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.gateway-game-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.gateway-hud {
+    position: absolute;
+    z-index: 10;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    pointer-events: none;
+}
+
+.gateway-hud-left,
+.gateway-hud-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.gateway-hud-box {
+    padding: 9px 14px;
+
+    border: 1px solid rgba(255, 207, 112, 0.45);
+    border-radius: 10px;
+
+    background: rgba(7, 21, 33, 0.78);
+    backdrop-filter: blur(8px);
+
+    color: #fdf3e2;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.gateway-title {
+    color: #ffcf70;
+
+    font-family: Cinzel, serif;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.gateway-touch-controls {
+    position: absolute;
+
+    left: 20px;
+    bottom: 20px;
+
+    z-index: 20;
+
+    display: none;
+
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gateway-touch-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gateway-touch-btn {
+    width: 52px;
+    height: 52px;
+
+    border: 1px solid rgba(255, 207, 112, 0.45);
+    border-radius: 12px;
+
+    background: rgba(7, 21, 33, 0.8);
+
+    color: #ffcf70;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    touch-action: none;
+    user-select: none;
+}
+
+.gateway-touch-btn:active {
+    background: rgba(255, 207, 112, 0.2);
+}
+
+.gateway-action-buttons {
+    position: absolute;
+
+    top: 70px;
+    right: 16px;
+
+    z-index: 20;
+}
+
+.gateway-action-btn {
+    padding: 8px 14px;
+
+    border: 1px solid rgba(255, 207, 112, 0.45);
+    border-radius: 9px;
+
+    background: rgba(7, 21, 33, 0.78);
+
+    color: #ffcf70;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.gateway-action-btn:hover {
+    background: rgba(255, 207, 112, 0.15);
+}
+
+.gateway-overlay {
+    position: absolute;
+    inset: 0;
+
+    z-index: 30;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        linear-gradient(
+            rgba(7, 21, 33, 0.72),
+            rgba(7, 21, 33, 0.82)
+        );
+}
+
+.gateway-overlay-card {
+    width: min(520px, 100%);
+
+    padding: 32px;
+
+    border: 1px solid rgba(255, 207, 112, 0.4);
+    border-radius: 18px;
+
+    background: rgba(7, 21, 33, 0.9);
+
+    color: #fdf3e2;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.gateway-overlay-card h2 {
+    margin: 0 0 14px;
+
+    color: #ffcf70;
+
+    font-family: Cinzel, serif;
+    font-size: 28px;
+}
+
+.gateway-overlay-card p {
+    margin: 8px 0;
+
+    color: rgba(253, 243, 226, 0.85);
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.gateway-start-btn {
+    margin-top: 20px;
+
+    padding: 12px 22px;
+
+    border: 1px solid rgba(255, 207, 112, 0.6);
+    border-radius: 10px;
+
+    background: #ffcf70;
+
+    color: #241608;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.gateway-start-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 24px rgba(255, 207, 112, 0.25);
+}
+
+@media (max-width: 768px) {
+    .gateway-touch-controls {
+        display: flex;
+    }
+
+    .gateway-hud {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+    }
+
+    .gateway-hud-box {
+        padding: 7px 10px;
+        font-size: 11px;
+    }
+
+    .gateway-title {
+        display: none;
+    }
+
+    .gateway-action-buttons {
+        top: 58px;
+        right: 10px;
+    }
+
+    .gateway-overlay-card {
+        padding: 24px 18px;
+    }
+
+    .gateway-overlay-card h2 {
+        font-size: 22px;
+    }
+}
