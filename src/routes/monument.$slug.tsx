@@ -1,4 +1,4 @@
-og code import {
+import {
   createFileRoute,
   Link,
   useNavigate,
